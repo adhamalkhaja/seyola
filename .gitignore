@@ -7,3 +7,4 @@ Thumbs.db
 
 # Autoresearch working files (if accidentally placed here)
 autoresearch-*/
+.git-backup
