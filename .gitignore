@@ -1,0 +1,9 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# State (local only, never committed)
+*.bak
+
+# Autoresearch working files (if accidentally placed here)
+autoresearch-*/

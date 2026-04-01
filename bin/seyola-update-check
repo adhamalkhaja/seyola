@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# seyola-update-check — Check for new version of Seyola Skills
+#
+# Outputs:
+#   UPGRADE_AVAILABLE <old> <new>   — newer version exists
+#   JUST_UPGRADED <old> <new>       — just upgraded, show what's new
+#   (nothing)                       — up to date or check skipped
+#
+# Usage:
+#   seyola-update-check             # Normal check (respects cache + snooze)
+#   seyola-update-check --force     # Ignore cache and snooze
+
+set -euo pipefail
+
+SEYOLA_HOME="$HOME/.seyola"
+CACHE_FILE="$SEYOLA_HOME/last-update-check"
+SNOOZE_FILE="$SEYOLA_HOME/update-snoozed"
+UPGRADED_FILE="$SEYOLA_HOME/just-upgraded-from"
+REPO_URL="${SEYOLA_REPO_URL:-https://raw.githubusercontent.com/adhamalkhaja/seyola/main/VERSION}"
+
+mkdir -p "$SEYOLA_HOME"
+
+FORCE=0
+[ "${1:-}" = "--force" ] && FORCE=1
+
+# --- Check for just-upgraded marker ---
+
+if [ -f "$UPGRADED_FILE" ]; then
+  OLD_VER=$(cat "$UPGRADED_FILE")
+  SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+  NEW_VER=$(cat "$SCRIPT_DIR/VERSION" 2>/dev/null || echo "unknown")
+  echo "JUST_UPGRADED $OLD_VER $NEW_VER"
+  rm -f "$UPGRADED_FILE"
+  exit 0
+fi
+
+# --- Resolve local version ---
+
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+LOCAL_VER=$(cat "$SCRIPT_DIR/VERSION" 2>/dev/null || echo "0.0.0")
+
+# --- Check snooze ---
+
+if [ "$FORCE" -eq 0 ] && [ -f "$SNOOZE_FILE" ]; then
+  SNOOZE_DATA=$(cat "$SNOOZE_FILE")
+  SNOOZE_VER=$(echo "$SNOOZE_DATA" | cut -d' ' -f1)
+  SNOOZE_LEVEL=$(echo "$SNOOZE_DATA" | cut -d' ' -f2)
+  SNOOZE_EPOCH=$(echo "$SNOOZE_DATA" | cut -d' ' -f3)
+  NOW=$(date +%s)
+
+  # Escalating snooze: 24h, 48h, 7d
+  case "$SNOOZE_LEVEL" in
+    1) SNOOZE_DURATION=86400 ;;
+    2) SNOOZE_DURATION=172800 ;;
+    *) SNOOZE_DURATION=604800 ;;
+  esac
+
+  SNOOZE_EXPIRES=$((SNOOZE_EPOCH + SNOOZE_DURATION))
+  if [ "$NOW" -lt "$SNOOZE_EXPIRES" ]; then
+    exit 0
+  fi
+fi
+
+# --- Check cache (60 min TTL) ---
+
+if [ "$FORCE" -eq 0 ] && [ -f "$CACHE_FILE" ]; then
+  CACHE_AGE=$(( $(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/dev/null || stat -f %m "$CACHE_FILE" 2>/dev/null || echo 0) ))
+  if [ "$CACHE_AGE" -lt 3600 ]; then
+    CACHED=$(cat "$CACHE_FILE")
+    if echo "$CACHED" | grep -q "^UPGRADE_AVAILABLE"; then
+      echo "$CACHED"
+    fi
+    exit 0
+  fi
+fi
+
+# --- Fetch remote version ---
+
+REMOTE_VER=$(curl -sf --max-time 5 "$REPO_URL" 2>/dev/null | tr -d '[:space:]' || echo "")
+
+if [ -z "$REMOTE_VER" ]; then
+  # Network unavailable, skip silently
+  exit 0
+fi
+
+# --- Compare versions ---
+
+if [ "$REMOTE_VER" != "$LOCAL_VER" ] && [ "$(printf '%s\n' "$LOCAL_VER" "$REMOTE_VER" | sort -V | tail -1)" = "$REMOTE_VER" ]; then
+  echo "UPGRADE_AVAILABLE $LOCAL_VER $REMOTE_VER" | tee "$CACHE_FILE"
+else
+  echo "UP_TO_DATE $LOCAL_VER" > "$CACHE_FILE"
+fi

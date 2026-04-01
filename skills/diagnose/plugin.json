@@ -1,0 +1,13 @@
+{
+  "name": "business-x-ray",
+  "version": "1.0.0",
+  "description": "Map, diagnose, and optimize business operations through progressive visual analysis. Creates Business Maps, Bow-Tie Funnels, and Process Swimlanes.",
+  "author": {
+    "name": "Seyola",
+    "url": "https://chiefleverageofficer.substack.com/"
+  },
+  "homepage": "https://github.com/the2hourclo/business-x-ray",
+  "repository": "https://github.com/the2hourclo/business-x-ray",
+  "license": "CC-BY-NC-4.0",
+  "keywords": ["business", "operations", "diagrams", "process-mapping", "consulting", "drawio"]
+}

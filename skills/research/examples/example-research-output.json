@@ -1,0 +1,82 @@
+{
+  "skill": "research",
+  "run": "001",
+  "question": "What does the market for business coaching targeting SaaS founders at $10-50K MRR look like?",
+  "sub_questions": [
+    "What evidence of real demand exists?",
+    "Who are the top 3-5 competitors and how are they positioned?",
+    "What price does this market bear?",
+    "What language do SaaS founders use to describe their pain?",
+    "Where is the gap nobody fills?"
+  ],
+  "type": "market",
+  "confidence": 7.0,
+  "key_findings": [
+    "Founders at $10-50K MRR want tactical SaaS-specific coaching from operators, not motivational coaching from generalists (confidence 8/10, 4 source types agree)",
+    "The $500-2K/month personalized coaching middle market is underserved (confidence 7/10, 3 source types agree)",
+    "Credibility gate: coach must have personally operated a SaaS past this stage (confidence 9/10, every source type confirms)",
+    "Real leverage at this stage is reducing complexity, not adding growth frameworks (confidence 6/10, single expert + supporting Reddit data)",
+    "Estimated ~4,000 potential US buyers (40K companies x ~10% coaching adoption rate) (confidence 5/10, extrapolated from survey data)"
+  ],
+  "consensus": [
+    "Tactical SaaS-specific coaching wanted, not motivational — confirmed by Reddit r/SaaS threads (Round 1), G2 reviews (Round 2), competitor gap analysis (Round 3), Rob Walling podcast (Round 5). 4 source types. Confidence 8/10.",
+    "Affordable middle market ($500-2K/month, personalized) is empty — confirmed by GrowthMentor reviews (Round 2), competitor pricing pages (Round 3), Reddit buyer complaints (Round 1). 3 source types. Confidence 7/10."
+  ],
+  "contradictions": [
+    "Group vs 1:1 preference — Reddit users strongly prefer 1:1 but SaaS Academy reviews show group cohort value. Likely segmented: solo founders want 1:1, funded founders accept group. Confidence in segmentation: 5/10 (hypothesis, not confirmed)."
+  ],
+  "silence": [
+    "Async coaching models (Loom/Slack-based) — no sources in any round discussed or demanded async-first coaching. Either not a concern or nobody's experienced it yet."
+  ],
+  "eureka": "Everyone in SaaS coaching charges premium ($15-25K/year) because they assume the value justifies it and the model requires cohort leverage. But evidence shows the real leverage at $10-50K MRR is REDUCING complexity, not teaching growth frameworks. A coach who helps you kill 3 features and fire 2 bad-fit customers delivers more value than one teaching 5 growth playbooks. Positioning should be 'operational clarity' not 'growth coaching.' This makes $1-2K/month viable for both sides.",
+  "sources_count": 23,
+  "layers": {
+    "tried_and_true": "High-ticket cohort coaching ($15-25K/yr) with brand and community. Table stakes: founder story, group calls, community access. Works for funded founders who can afford it.",
+    "new_and_popular": "Marketplace/on-demand models (GrowthMentor, Clarity.fm) growing. Trend away from 12-week programs toward ongoing advisory relationships. Quality control is the persistent complaint.",
+    "first_principles": "Market structured around coach profitability (cohort leverage), not founder effectiveness (1:1 attention). Middle is empty because 1:1 at $1-2K seems unprofitable — unless you reframe as operational clarity (fewer hours, higher leverage per session)."
+  },
+  "raw_language": {
+    "pain": [
+      "\"I'm the bottleneck for literally everything and I know it but I don't know what to delegate first\" — Reddit u/SaaSgrinder42, r/SaaS",
+      "\"Every coach I've talked to gives me Tony Robbins energy. I need someone who's actually run a SaaS past $50K MRR\" — Reddit u/founderslog, r/startups",
+      "\"Churn is killing me. I've read all the books. I need someone to look at MY specific numbers\" — Reddit u/mrrchurnburn, r/SaaS",
+      "\"The group coaching was fine for motivation but useless for my specific churn problem\" — YouTube comment, MicroConf video",
+      "\"Every 'SaaS coach' is actually a marketing coach who learned the word SaaS\" — G2 review of Clarity.fm"
+    ],
+    "desire": [
+      "\"I'd pay $2K/month for someone who's been where I am and can just tell me what to focus on this week\" — Reddit u/SaaSgrinder42, r/SaaS",
+      "\"What I really want is a technical co-founder brain but in advisor form\" — IndieHackers u/solobuilder88",
+      "\"Just give me a fractional COO brain for 2 hours a month\" — YouTube comment, SaaStr video",
+      "\"I wish there was something between 'free advice on Twitter' and '$25K mastermind'\" — G2 review of GrowthMentor",
+      "\"Someone who can call BS on your priorities\" — Rob Walling, Startups For The Rest of Us ep. 734"
+    ],
+    "objection": [
+      "\"Most coaches have never built anything. They coach because they couldn't execute\" — Reddit u/skepticfounder, r/startups",
+      "\"$500/session. He kept asking me how I felt about my goals. I cancelled after 3 sessions\" — Reddit u/nomorefluffy, r/SaaS",
+      "\"The good coaches charge $500+/hr and only take late-stage. The affordable ones have no SaaS experience\" — Trustpilot, SaaS Academy",
+      "\"I don't need a 12-week program. My problems change every month\" — YouTube comment, MicroConf video",
+      "\"Nobody wants to pay a coach to tell them to do less\" — Hiten Shah, IndieHackers interview"
+    ]
+  },
+  "competitors": [
+    {"name": "SaaS Academy (Dan Martell)", "positioning": "Scale to $10M ARR", "pricing": "$15-25K/year", "target": "$1M+ ARR founders", "gap": "Targets higher ARR. $10-50K MRR founders feel outgunned."},
+    {"name": "GrowthMentor", "positioning": "On-demand mentorship marketplace", "pricing": "$99-199/month", "target": "Broad startups", "gap": "Quality varies wildly. No continuity with one coach."},
+    {"name": "MicroConf / TinySeed", "positioning": "Bootstrapper community", "pricing": "$500/yr - $2K events", "target": "Bootstrapped SaaS", "gap": "Community not coaching. No 1:1."},
+    {"name": "Pavilion", "positioning": "Executive revenue community", "pricing": "$2-8K/year", "target": "Revenue leaders at funded companies", "gap": "Peer network for funded, not solo founders."},
+    {"name": "Independent coaches", "positioning": "Varies", "pricing": "$200-800/session", "target": "Whoever finds them", "gap": "Discovery problem. Hard to find, hard to vet."}
+  ],
+  "search_log": [
+    {"round": 1, "query": "SaaS founder coaching frustrated reddit", "status": "ok", "results": 15, "fetched": 3, "quotes": 4},
+    {"round": 1, "query": "SaaS founder struggling scaling 10K-50K MRR reddit", "status": "ok", "results": 8, "fetched": 3, "quotes": 3},
+    {"round": 2, "query": "SaaS founder coaching program review youtube", "status": "ok", "results": 20, "fetched": 3, "quotes": 4},
+    {"round": 2, "query": "SaaS coaching G2 reviews", "status": "ok", "results": 12, "fetched": 2, "quotes": 3},
+    {"round": 3, "query": "best SaaS founder coaching programs 2026", "status": "ok", "results": 18, "fetched": 5, "quotes": 0},
+    {"round": 3, "query": "SaaS business coaching pricing tiers", "status": "ok", "results": 10, "fetched": 3, "quotes": 0},
+    {"round": 4, "query": "SaaS coaching market trends 2026", "status": "ok", "results": 8, "fetched": 2, "quotes": 0},
+    {"round": 4, "query": "founder coaching market growing", "status": "rephrased", "original": "business coaching industry size growth", "reason": "too broad, needed founder-specific", "rephrase_results": 6},
+    {"round": 5, "query": "Rob Walling founder coaching advice", "status": "ok", "results": 5, "fetched": 2, "quotes": 1},
+    {"round": 5, "query": "Hiten Shah SaaS coaching founders", "status": "ok", "results": 3, "fetched": 1, "quotes": 1},
+    {"round": "verification", "query": "SaaS operational advisor fractional COO early stage", "status": "ok", "results": 7, "fetched": 3, "quotes": 0, "verdict_impact": "confirmed"}
+  ],
+  "ts": "2026-03-31T14:45:00Z"
+}

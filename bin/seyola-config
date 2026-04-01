@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# seyola-config — Read/write ~/.seyola/config.yaml
+#
+# Usage:
+#   seyola-config get <key>         # Read a value
+#   seyola-config set <key> <value> # Write a value
+#   seyola-config list              # Show all config
+
+set -euo pipefail
+
+CONFIG_DIR="$HOME/.seyola"
+CONFIG_FILE="$CONFIG_DIR/config.yaml"
+
+mkdir -p "$CONFIG_DIR"
+
+# Create config with header if it doesn't exist
+if [ ! -f "$CONFIG_FILE" ]; then
+  cat > "$CONFIG_FILE" << 'HEADER'
+# Seyola Skills configuration
+# Edit this file or use: seyola-config set <key> <value>
+#
+# Keys:
+#   skill_prefix    — 0 (flat names) or 1 (seyola-* prefix)
+#   auto_upgrade    — true/false (silently upgrade on check)
+#   update_check    — true/false (show version notifications)
+#   telemetry       — off/anonymous/community
+HEADER
+fi
+
+CMD="${1:-}"
+KEY="${2:-}"
+VALUE="${3:-}"
+
+case "$CMD" in
+  get)
+    [ -z "$KEY" ] && echo "Usage: seyola-config get <key>" && exit 1
+    grep -m1 "^${KEY}:" "$CONFIG_FILE" 2>/dev/null | sed "s/^${KEY}: *//" | tr -d '"' | tr -d "'" || true
+    ;;
+  set)
+    [ -z "$KEY" ] && echo "Usage: seyola-config set <key> <value>" && exit 1
+    if grep -q "^${KEY}:" "$CONFIG_FILE" 2>/dev/null; then
+      # Update existing key
+      if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' "s/^${KEY}:.*/${KEY}: ${VALUE}/" "$CONFIG_FILE"
+      else
+        sed -i "s/^${KEY}:.*/${KEY}: ${VALUE}/" "$CONFIG_FILE"
+      fi
+    else
+      # Append new key
+      echo "${KEY}: ${VALUE}" >> "$CONFIG_FILE"
+    fi
+    ;;
+  list)
+    grep -v '^#' "$CONFIG_FILE" 2>/dev/null | grep -v '^$' || echo "(empty)"
+    ;;
+  *)
+    echo "Usage: seyola-config {get|set|list} [key] [value]"
+    exit 1
+    ;;
+esac

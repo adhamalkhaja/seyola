@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seyola Research — {{RESEARCH_QUESTION}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Sans&family=Hedvig+Letters+Serif&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     SEYOLA DESIGN SYSTEM — NAVY THEME
+     Matches seyola.ai/scan exactly.
+     HSL 225 monochrome. No radius. No shadows.
+     Terminal-native aesthetic.
+     ============================================ */
+
+  :root {
+    --bg: hsl(225, 70%, 22%);
+    --fg: hsl(0, 0%, 100%);
+    --muted: hsl(225, 60%, 18%);
+    --muted-fg: hsl(225, 60%, 75%);
+    --border: hsl(225, 50%, 35%);
+    --accent: hsl(225, 50%, 60%);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    /* Annotation colors */
+    --green: #90EE90;
+    --red: #FF6B6B;
+    --amber: #FFA500;
+    --purple: #9370DB;
+    --font-sans: 'Hedvig Letters Sans', 'Geist Sans', system-ui, sans-serif;
+    --font-serif: 'Hedvig Letters Serif', Georgia, serif;
+    --font-mono: 'IBM Plex Mono', 'Hedvig Letters Sans', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--muted); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* ---- MONO + PIXEL-LINES (matches seyola.ai terminal aesthetic) ---- */
+  .mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+  .text-pixel-lines {
+    color: transparent !important;
+    background-image: repeating-linear-gradient(
+      0deg,
+      hsl(225, 60%, 75%) 0px,
+      hsl(225, 60%, 75%) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  /* ---- SVG DIAGRAMS (zoomable, lightweight, no library) ---- */
+  .diagram-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin: 16px 0;
+    border: 0.5px solid var(--border);
+    background: var(--muted);
+    cursor: grab;
+  }
+  .diagram-container:active { cursor: grabbing; }
+  .diagram-container svg {
+    display: block;
+    min-width: 100%;
+    height: auto;
+  }
+  .diagram-container svg text {
+    font-family: var(--font-sans);
+    fill: var(--fg);
+  }
+  .diagram-container svg .node-label {
+    font-size: 12px;
+    fill: var(--fg);
+  }
+  .diagram-container svg .edge-label {
+    font-size: 10px;
+    fill: var(--muted-fg);
+  }
+  .diagram-container svg rect { rx: 0; ry: 0; }  /* sharp corners to match brand */
+  .diagram-container svg .node-bottleneck { fill: hsla(0, 100%, 71%, 0.12); stroke: var(--red); }
+  .diagram-container svg .node-automate { fill: hsla(39, 100%, 50%, 0.12); stroke: var(--amber); stroke-dasharray: 6 3; }
+  .diagram-container svg .node-high-value { fill: hsla(120, 73%, 75%, 0.12); stroke: var(--green); }
+  .diagram-container svg .node-digital-asset { fill: hsla(260, 54%, 65%, 0.12); stroke: var(--purple); }
+  .diagram-container svg .node-default { fill: var(--muted); stroke: var(--border); }
+  .diagram-container svg .edge { stroke: var(--border); fill: none; }
+  .diagram-container svg .edge-arrow { fill: var(--border); }
+  .diagram-zoom {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+    padding: 4px 8px;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--muted);
+  }
+  .diagram-zoom button {
+    background: none;
+    border: 0.5px solid var(--border);
+    color: var(--muted-fg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .diagram-zoom button:hover { color: var(--fg); }
+
+  /* ---- LAYOUT ---- */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---- HEADER ---- */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    letter-spacing: -0.02em;
+  }
+  .header-meta {
+    font-size: 11px;
+    color: var(--muted-fg);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ---- HERO / SUMMARY CARD ---- */
+  .hero {
+    padding: 48px 0 32px;
+  }
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .hero-subtitle {
+    font-size: 16px;
+    color: var(--muted-fg);
+    max-width: 600px;
+    line-height: 1.5;
+  }
+
+  /* Score cards row */
+  .score-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 32px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .score-card {
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-top: -1px;
+    margin-left: -1px;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .score-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .score-value {
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .score-detail {
+    font-size: 12px;
+    color: var(--muted-fg);
+    margin-top: 4px;
+  }
+
+  /* ---- HATCHED DIVIDER ---- */
+  .divider {
+    width: 100%;
+    padding: 4px 0;
+  }
+  .divider-inner {
+    height: 16px;
+    width: 100%;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background-image: repeating-linear-gradient(
+      -60deg,
+      hsla(225, 50%, 35%, 0.4),
+      hsla(225, 50%, 35%, 0.4) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  }
+
+  /* ---- TABS ---- */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    margin-top: 32px;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+  .tab {
+    padding: 10px 20px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    transition: color 0.15s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .tab:hover { color: var(--fg); }
+  .tab.active {
+    color: var(--fg);
+    border-bottom-color: var(--green);
+  }
+
+  /* ---- SECTIONS ---- */
+  .section { display: none; padding: 32px 0 48px; }
+  .section.active { display: block; }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--muted-fg);
+    margin-bottom: 24px;
+    max-width: 600px;
+  }
+
+  /* ---- GRID (Collapsed borders) ---- */
+  .grid {
+    display: grid;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-7 { grid-template-columns: repeat(7, 1fr); }
+
+  /* ---- CARDS ---- */
+  .card {
+    border: 1px solid var(--border);
+    padding: 1px;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .card-inner {
+    padding: 16px;
+  }
+  .card-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+  .card-text {
+    font-size: 13px;
+    color: var(--muted-fg);
+    line-height: 1.6;
+  }
+  .card-list {
+    list-style: none;
+    padding: 0;
+  }
+  .card-list li {
+    font-size: 13px;
+    color: var(--muted-fg);
+    padding: 3px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .card-list li::before {
+    content: "◇";
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ---- TABLES ---- */
+  .table-wrap {
+    position: relative;
+    margin-top: 16px;
+    border: 0.5px solid var(--fg);
+  }
+  .table-label {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background: var(--bg);
+    padding: 0 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    text-align: left;
+    padding: 8px 12px;
+    font-weight: 400;
+    color: var(--muted-fg);
+    border-bottom: 0.5px solid var(--border);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  tbody td {
+    padding: 6px 12px;
+    border-bottom: 0.5px solid hsla(225, 50%, 35%, 0.3);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .total-row td {
+    border-top: 0.5px solid var(--fg);
+    padding-top: 8px;
+    font-weight: 400;
+  }
+
+  /* ---- BADGES ---- */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .badge-green { background: hsla(120, 73%, 75%, 0.15); color: var(--green); border: 0.5px solid var(--green); }
+  .badge-red { background: hsla(0, 100%, 71%, 0.15); color: var(--red); border: 0.5px solid var(--red); }
+  .badge-amber { background: hsla(39, 100%, 50%, 0.15); color: var(--amber); border: 0.5px solid var(--amber); }
+  .badge-purple { background: hsla(260, 54%, 65%, 0.15); color: var(--purple); border: 0.5px solid var(--purple); }
+
+  /* ---- PROGRESS BAR ---- */
+  .progress-track {
+    height: 4px;
+    background: var(--muted);
+    width: 100%;
+    margin-top: 8px;
+  }
+  .progress-fill {
+    height: 4px;
+    transition: width 0.3s;
+  }
+  .progress-fill.green { background: var(--green); }
+  .progress-fill.amber { background: var(--amber); }
+  .progress-fill.red { background: var(--red); }
+
+  /* ---- SWIMLANE (Process map) ---- */
+  .swimlane {
+    margin-top: 24px;
+  }
+  .swimlane-header {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    border: 0.5px solid var(--border);
+  }
+  .swimlane-lane-label {
+    padding: 8px 12px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-right: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+  .swimlane-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    border: 0.5px solid var(--border);
+    border-top: none;
+    min-height: 60px;
+  }
+  .swimlane-steps {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .step-box {
+    padding: 6px 14px;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    background: var(--muted);
+    white-space: nowrap;
+  }
+  .step-box.bottleneck { border-color: var(--red); background: hsla(0, 100%, 71%, 0.08); }
+  .step-box.automate { border-color: var(--amber); background: hsla(39, 100%, 50%, 0.08); border-style: dashed; }
+  .step-box.high-value { border-color: var(--green); background: hsla(120, 73%, 75%, 0.08); }
+  .step-box.digital-asset { border-color: var(--purple); background: hsla(260, 54%, 65%, 0.08); }
+  .step-arrow {
+    color: var(--muted-fg);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ---- ROADMAP CARDS ---- */
+  .roadmap-tier {
+    margin-top: 24px;
+  }
+  .tier-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 8px 0;
+    margin-bottom: 8px;
+  }
+  .tier-label.first { color: var(--red); }
+  .tier-label.next { color: var(--amber); }
+  .tier-label.later { color: var(--muted-fg); }
+
+  .roadmap-item {
+    border: 1px solid var(--border);
+    padding: 16px;
+    margin-top: -1px;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .roadmap-item-title { font-size: 14px; }
+  .roadmap-item-detail { font-size: 12px; color: var(--muted-fg); margin-top: 4px; }
+  .roadmap-meta {
+    font-size: 11px;
+    color: var(--muted-fg);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* ---- SYSTEM MAP (connections) ---- */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    margin-top: 16px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .tool-card {
+    border: 1px solid var(--border);
+    padding: 14px;
+    margin-top: -1px;
+    margin-left: -1px;
+  }
+  .tool-name { font-size: 13px; margin-bottom: 4px; }
+  .tool-role { font-size: 11px; color: var(--muted-fg); }
+  .tool-card.connected { border-color: var(--green); }
+  .tool-card.manual { border-color: var(--amber); border-style: dashed; }
+  .tool-card.disconnected { border-color: var(--red); }
+
+  /* ---- FOOTER ---- */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+    margin-top: 48px;
+    font-size: 11px;
+    color: var(--muted-fg);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ---- PRINT ---- */
+  @media print {
+    body { background: white; color: black; }
+    .tabs { display: none; }
+    .section { display: block !important; page-break-inside: avoid; }
+    .divider-inner { background-image: none; border-color: #ccc; }
+    .card, .score-card, .table-wrap, .swimlane-row, .roadmap-item, .tool-card {
+      border-color: #ddd;
+    }
+    .badge-green { color: #2d8a4e; border-color: #90EE90; background: #f0fdf4; }
+    .badge-red { color: #dc2626; border-color: #FF6B6B; background: #fef2f2; }
+    .badge-amber { color: #b45309; border-color: #FFA500; background: #fffbeb; }
+    .badge-purple { color: #6d28d9; border-color: #9370DB; background: #f5f3ff; }
+    .score-label, .card-label, .table-label, .tier-label, .header-meta, .tab { color: #666; }
+    .diagram-zoom { display: none; }
+    .footer { color: #999; }
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 768px) {
+    .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .grid-7 { grid-template-columns: repeat(7, minmax(120px, 1fr)); overflow-x: auto; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .score-row { grid-template-columns: repeat(2, 1fr); }
+    .grid-7 { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .hero h1 { font-size: 28px; }
+    .roadmap-item { grid-template-columns: 1fr; gap: 8px; }
+    .roadmap-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<div class="header">
+  <div class="container header-inner">
+    <div class="header-title">Seyola Research</div>
+    <div class="header-meta mono">{{DATE}} · {{RESEARCH_TYPE}}</div>
+  </div>
+</div>
+
+<!-- ============ HERO / SUMMARY ============ -->
+<div class="container hero">
+  <h1>{{RESEARCH_QUESTION}}</h1>
+  <p class="hero-subtitle">{{RESEARCH_BRIEF}}</p>
+
+  <div class="score-row">
+    <div class="score-card">
+      <div class="score-label">Confidence</div>
+      <div class="score-value">{{CONFIDENCE}}<span style="color:var(--muted-fg);font-size:16px">/10</span></div>
+      <div class="score-detail">overall research confidence</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Sources</div>
+      <div class="score-value">{{SOURCE_COUNT}}</div>
+      <div class="score-detail">across {{SOURCE_TYPES}} source types</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Competitors</div>
+      <div class="score-value">{{COMPETITOR_COUNT}}</div>
+      <div class="score-detail">mapped</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Raw Quotes</div>
+      <div class="score-value">{{QUOTE_COUNT}}</div>
+      <div class="score-detail">verbatim from real people</div>
+    </div>
+  </div>
+</div>
+
+<div class="container"><div class="divider"><div class="divider-inner"></div></div></div>
+
+<!-- ============ TABS ============ -->
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" data-tab="summary">Summary</button>
+    <button class="tab" data-tab="pain">Pain & Demand</button>
+    <button class="tab" data-tab="competition">Competition</button>
+    <button class="tab" data-tab="market">Market Context</button>
+    <button class="tab" data-tab="evidence">Evidence</button>
+    <button class="tab" data-tab="next">Next Steps</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ============ SUMMARY TAB ============ -->
+  <section class="section active" data-tab="summary">
+    <h2 class="section-title">Key Findings</h2>
+    <p class="section-subtitle">The intelligence picture in 60 seconds.</p>
+
+    <!-- Key findings as cards -->
+    <div class="grid grid-2" style="margin-top:16px">
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Finding 1</div>
+        <div class="card-text">{{FINDING_1}}</div>
+        <div style="margin-top:8px"><span class="badge badge-green">{{FINDING_1_CONFIDENCE}}/10</span></div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Finding 2</div>
+        <div class="card-text">{{FINDING_2}}</div>
+        <div style="margin-top:8px"><span class="badge badge-green">{{FINDING_2_CONFIDENCE}}/10</span></div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Finding 3</div>
+        <div class="card-text">{{FINDING_3}}</div>
+        <div style="margin-top:8px"><span class="badge badge-amber">{{FINDING_3_CONFIDENCE}}/10</span></div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Finding 4</div>
+        <div class="card-text">{{FINDING_4}}</div>
+        <div style="margin-top:8px"><span class="badge badge-amber">{{FINDING_4_CONFIDENCE}}/10</span></div>
+      </div></div>
+      <!-- Add more findings as needed -->
+    </div>
+
+    <!-- 3-Layer Synthesis -->
+    <h2 class="section-title" style="margin-top:48px">3-Layer Synthesis</h2>
+    <div class="grid grid-3" style="margin-top:16px">
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Layer 1: Tried & True</div>
+        <div class="card-text">{{LAYER_1}}</div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Layer 2: New & Popular</div>
+        <div class="card-text">{{LAYER_2}}</div>
+      </div></div>
+      <div class="card" style="outline:1.5px solid var(--accent);outline-offset:-1.5px;z-index:1;position:relative"><div class="card-inner">
+        <div class="card-label" style="color:var(--accent)">Layer 3: First Principles</div>
+        <div class="card-text">{{LAYER_3}}</div>
+      </div></div>
+    </div>
+
+    <!-- Eureka (if found) -->
+    <!-- Only include this block if a eureka insight was found. Omit entirely if not. -->
+    <div style="margin-top:32px;border:1px solid var(--accent);padding:20px">
+      <div class="score-label" style="color:var(--accent)">Eureka</div>
+      <div style="font-size:14px;margin-top:4px">{{EUREKA}}</div>
+    </div>
+
+    <!-- Consensus / Contradiction / Silence -->
+    <h2 class="section-title" style="margin-top:48px">Cross-Reference</h2>
+    <div style="margin-top:16px">
+      <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);margin-bottom:8px" class="mono">Consensus (3+ sources agree)</div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text">{{CONSENSUS_1}}</div>
+      </div></div>
+      <!-- Add more consensus items -->
+    </div>
+    <div style="margin-top:16px">
+      <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:8px" class="mono">Contradiction (sources disagree)</div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text">{{CONTRADICTION_1}}</div>
+      </div></div>
+    </div>
+    <div style="margin-top:16px">
+      <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:8px" class="mono">Silence (no sources addressed)</div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text">{{SILENCE_1}}</div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ============ PAIN & DEMAND TAB ============ -->
+  <section class="section" data-tab="pain">
+    <h2 class="section-title">Pain & Demand</h2>
+    <p class="section-subtitle">What real people say about this space. Verbatim quotes, not summaries.</p>
+
+    <!-- Pain quotes -->
+    <div style="margin-top:24px">
+      <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-bottom:12px" class="mono">Pain (what they're struggling with)</div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text" style="font-style:italic">"{{PAIN_QUOTE_1}}"</div>
+        <div style="font-size:11px;color:var(--muted-fg);margin-top:6px" class="mono">— {{PAIN_SOURCE_1}}</div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text" style="font-style:italic">"{{PAIN_QUOTE_2}}"</div>
+        <div style="font-size:11px;color:var(--muted-fg);margin-top:6px" class="mono">— {{PAIN_SOURCE_2}}</div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text" style="font-style:italic">"{{PAIN_QUOTE_3}}"</div>
+        <div style="font-size:11px;color:var(--muted-fg);margin-top:6px" class="mono">— {{PAIN_SOURCE_3}}</div>
+      </div></div>
+      <!-- Add more pain quotes -->
+    </div>
+
+    <!-- Desire quotes -->
+    <div style="margin-top:32px">
+      <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);margin-bottom:12px" class="mono">Desire (what they wish existed)</div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text" style="font-style:italic">"{{DESIRE_QUOTE_1}}"</div>
+        <div style="font-size:11px;color:var(--muted-fg);margin-top:6px" class="mono">— {{DESIRE_SOURCE_1}}</div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text" style="font-style:italic">"{{DESIRE_QUOTE_2}}"</div>
+        <div style="font-size:11px;color:var(--muted-fg);margin-top:6px" class="mono">— {{DESIRE_SOURCE_2}}</div>
+      </div></div>
+      <!-- Add more desire quotes -->
+    </div>
+
+    <!-- Objection quotes -->
+    <div style="margin-top:32px">
+      <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:12px" class="mono">Objection (why they haven't bought)</div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text" style="font-style:italic">"{{OBJECTION_QUOTE_1}}"</div>
+        <div style="font-size:11px;color:var(--muted-fg);margin-top:6px" class="mono">— {{OBJECTION_SOURCE_1}}</div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-text" style="font-style:italic">"{{OBJECTION_QUOTE_2}}"</div>
+        <div style="font-size:11px;color:var(--muted-fg);margin-top:6px" class="mono">— {{OBJECTION_SOURCE_2}}</div>
+      </div></div>
+      <!-- Add more objection quotes -->
+    </div>
+  </section>
+
+  <!-- ============ COMPETITION TAB ============ -->
+  <section class="section" data-tab="competition">
+    <h2 class="section-title">Competitive Landscape</h2>
+    <p class="section-subtitle">Who's in this space, how they're positioned, and where the gaps are.</p>
+
+    <!-- Competitor table -->
+    <div class="table-wrap" style="margin-top:24px">
+      <span class="table-label">Competitors</span>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Positioning</th><th>Pricing</th><th>Target</th><th>Gap</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{COMP_1_NAME}}</td>
+            <td>{{COMP_1_POSITIONING}}</td>
+            <td>{{COMP_1_PRICING}}</td>
+            <td>{{COMP_1_TARGET}}</td>
+            <td>{{COMP_1_GAP}}</td>
+          </tr>
+          <tr>
+            <td>{{COMP_2_NAME}}</td>
+            <td>{{COMP_2_POSITIONING}}</td>
+            <td>{{COMP_2_PRICING}}</td>
+            <td>{{COMP_2_TARGET}}</td>
+            <td>{{COMP_2_GAP}}</td>
+          </tr>
+          <tr>
+            <td>{{COMP_3_NAME}}</td>
+            <td>{{COMP_3_POSITIONING}}</td>
+            <td>{{COMP_3_PRICING}}</td>
+            <td>{{COMP_3_TARGET}}</td>
+            <td>{{COMP_3_GAP}}</td>
+          </tr>
+          <!-- Add more competitors -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Positioning gap -->
+    <div style="margin-top:32px;border:1px solid var(--accent);padding:20px">
+      <div class="score-label" style="color:var(--accent)">Positioning Gap</div>
+      <div style="font-size:14px;margin-top:4px">{{POSITIONING_GAP}}</div>
+    </div>
+  </section>
+
+  <!-- ============ MARKET CONTEXT TAB ============ -->
+  <section class="section" data-tab="market">
+    <h2 class="section-title">Market Context</h2>
+    <p class="section-subtitle">Trends, data, and what authority voices say about this space.</p>
+
+    <!-- Market data cards -->
+    <div class="grid grid-3" style="margin-top:16px">
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Market Size</div>
+        <div class="card-text">{{MARKET_SIZE}}</div>
+        <div style="margin-top:8px"><span class="badge badge-amber">{{MARKET_SIZE_CONFIDENCE}}/10</span></div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Growth</div>
+        <div class="card-text">{{MARKET_GROWTH}}</div>
+        <div style="margin-top:8px"><span class="badge badge-green">{{MARKET_GROWTH_CONFIDENCE}}/10</span></div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-label">Segment Size</div>
+        <div class="card-text">{{SEGMENT_SIZE}}</div>
+        <div style="margin-top:8px"><span class="badge badge-amber">{{SEGMENT_SIZE_CONFIDENCE}}/10</span></div>
+      </div></div>
+    </div>
+
+    <!-- Authority voices -->
+    <h3 style="font-size:16px;margin-top:32px;margin-bottom:12px">Authority Voices</h3>
+    <div class="card"><div class="card-inner">
+      <div class="card-text" style="font-style:italic">"{{AUTHORITY_QUOTE_1}}"</div>
+      <div style="font-size:11px;margin-top:6px;display:flex;justify-content:space-between;align-items:center">
+        <span style="color:var(--muted-fg)" class="mono">— {{AUTHORITY_NAME_1}}</span>
+        <span class="badge badge-green" style="font-size:9px">High credibility</span>
+      </div>
+    </div></div>
+    <div class="card"><div class="card-inner">
+      <div class="card-text" style="font-style:italic">"{{AUTHORITY_QUOTE_2}}"</div>
+      <div style="font-size:11px;margin-top:6px;display:flex;justify-content:space-between;align-items:center">
+        <span style="color:var(--muted-fg)" class="mono">— {{AUTHORITY_NAME_2}}</span>
+        <span class="badge badge-green" style="font-size:9px">High credibility</span>
+      </div>
+    </div></div>
+    <!-- Add more authority quotes -->
+  </section>
+
+  <!-- ============ EVIDENCE TAB ============ -->
+  <section class="section" data-tab="evidence">
+    <h2 class="section-title">Evidence Log</h2>
+    <p class="section-subtitle">Every finding with source, confidence, recency, and messenger credibility.</p>
+
+    <div class="table-wrap" style="margin-top:24px">
+      <span class="table-label">All Evidence</span>
+      <table>
+        <thead>
+          <tr><th>Finding</th><th>Source</th><th>Confidence</th><th>Recency</th><th>Messenger</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{EVIDENCE_1_FINDING}}</td>
+            <td><span style="font-size:11px" class="mono">{{EVIDENCE_1_SOURCE}}</span></td>
+            <td><span class="badge badge-green">{{EVIDENCE_1_CONFIDENCE}}/10</span></td>
+            <td>{{EVIDENCE_1_RECENCY}}</td>
+            <td>{{EVIDENCE_1_MESSENGER}}</td>
+          </tr>
+          <tr>
+            <td>{{EVIDENCE_2_FINDING}}</td>
+            <td><span style="font-size:11px" class="mono">{{EVIDENCE_2_SOURCE}}</span></td>
+            <td><span class="badge badge-amber">{{EVIDENCE_2_CONFIDENCE}}/10</span></td>
+            <td>{{EVIDENCE_2_RECENCY}}</td>
+            <td>{{EVIDENCE_2_MESSENGER}}</td>
+          </tr>
+          <!-- Add more evidence rows -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ NEXT STEPS TAB ============ -->
+  <section class="section" data-tab="next">
+    <h2 class="section-title">Next Steps</h2>
+    <p class="section-subtitle">What to do with this research.</p>
+
+    <!-- Confirmed vs needs more data -->
+    <div class="grid grid-2" style="margin-top:16px">
+      <div>
+        <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);margin-bottom:12px" class="mono">Confirmed (high confidence)</div>
+        <ul class="card-list">
+          <li>{{CONFIRMED_1}}</li>
+          <li>{{CONFIRMED_2}}</li>
+          <li>{{CONFIRMED_3}}</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:12px" class="mono">Needs More Data</div>
+        <ul class="card-list">
+          <li>{{NEEDS_DATA_1}}</li>
+          <li>{{NEEDS_DATA_2}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Recommended skills -->
+    <h3 style="font-size:16px;margin-top:32px;margin-bottom:12px">Recommended Next Skills</h3>
+    <div class="grid grid-2">
+      <div class="card"><div class="card-inner">
+        <div class="card-label">{{SKILL_REC_1_NAME}}</div>
+        <div class="card-text">{{SKILL_REC_1_REASON}}</div>
+      </div></div>
+      <div class="card"><div class="card-inner">
+        <div class="card-label">{{SKILL_REC_2_NAME}}</div>
+        <div class="card-text">{{SKILL_REC_2_REASON}}</div>
+      </div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div class="container">
+  <div class="footer">
+    <span>Generated by Seyola Research on {{DATE}}</span>
+    <span>seyola.ai</span>
+  </div>
+</div>
+
+<!-- ============ TAB SWITCHING ============ -->
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`section[data-tab="${tab.dataset.tab}"]`).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
