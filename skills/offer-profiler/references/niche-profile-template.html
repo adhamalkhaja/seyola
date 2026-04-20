@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niche Profile</title>
+<style>
+  :root {
+    --accent: #0a8a6a;
+    --accent-light: #e6f5f0;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --border: #e0e0e0;
+    --card-bg: #f8f8f8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+  h1 { font-family: 'JetBrains Mono', monospace; font-size: 2rem; margin-bottom: 4px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: var(--accent); margin: 32px 0 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+  h3 { font-size: 1rem; margin-bottom: 8px; }
+
+  .cover { text-align: center; padding: 60px 0 40px; border-bottom: 3px solid var(--accent); margin-bottom: 40px; }
+  .cover .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+  .cover .date { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  .five-ps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .five-ps-grid .p-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .five-ps-grid .p-card .p-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .five-ps-grid .p-card .p-value {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .ihelp-block {
+    background: var(--accent);
+    color: white;
+    padding: 24px 32px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-style: italic;
+    text-align: center;
+    margin: 24px 0;
+    line-height: 1.5;
+  }
+
+  .avatar-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .avatar-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .avatar-layers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .avatar-layer {
+    padding: 12px;
+    border-left: 3px solid var(--accent);
+    background: white;
+    border-radius: 0 6px 6px 0;
+  }
+  .avatar-layer .layer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .avatar-layer .layer-value { font-size: 0.85rem; }
+
+  .avatar-description {
+    margin-top: 16px;
+    padding: 16px;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+  }
+
+  .stage-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 8px 0;
+  }
+  .commitment {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 20px; }
+    .cover { padding: 30px 0 20px; }
+    h2 { break-after: avoid; }
+    .five-ps-grid, .avatar-layers { break-inside: avoid; }
+  }
+
+  @media (max-width: 600px) {
+    .five-ps-grid { grid-template-columns: repeat(2, 1fr); }
+    .five-ps-grid .p-card:last-child { grid-column: span 2; }
+    .avatar-layers { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>Niche Profile</h1>
+  <div class="subtitle"><!-- USER_NAME --></div>
+  <div class="date"><!-- DATE --></div>
+</div>
+
+<h2>The Five Ps</h2>
+<div class="five-ps-grid">
+  <div class="p-card">
+    <div class="p-label">Person</div>
+    <div class="p-value"><!-- FIVE_P_PERSON --></div>
+  </div>
+  <div class="p-card">
+    <div class="p-label">Pain</div>
+    <div class="p-value"><!-- FIVE_P_PAIN --></div>
+  </div>
+  <div class="p-card">
+    <div class="p-label">Promise</div>
+    <div class="p-value"><!-- FIVE_P_PROMISE --></div>
+  </div>
+  <div class="p-card">
+    <div class="p-label">Path</div>
+    <div class="p-value"><!-- FIVE_P_PATH --></div>
+  </div>
+  <div class="p-card">
+    <div class="p-label">Platform</div>
+    <div class="p-value"><!-- FIVE_P_PLATFORM --></div>
+  </div>
+</div>
+
+<h2>"I Help" Statement</h2>
+<div class="ihelp-block">
+  <!-- IHELP_STATEMENT -->
+</div>
+
+<h2>Perfect Future Client</h2>
+<div class="avatar-card">
+  <div class="avatar-name"><!-- PFC_NAME --></div>
+  <div class="avatar-layers">
+    <div class="avatar-layer">
+      <div class="layer-label">Demographics</div>
+      <div class="layer-value"><!-- PFC_DEMOGRAPHICS --></div>
+    </div>
+    <div class="avatar-layer">
+      <div class="layer-label">Psychographics</div>
+      <div class="layer-value"><!-- PFC_PSYCHOGRAPHICS --></div>
+    </div>
+    <div class="avatar-layer">
+      <div class="layer-label">Behavioral</div>
+      <div class="layer-value"><!-- PFC_BEHAVIORAL --></div>
+    </div>
+    <div class="avatar-layer">
+      <div class="layer-label">Emotional Triggers</div>
+      <div class="layer-value"><!-- PFC_EMOTIONAL --></div>
+    </div>
+  </div>
+  <div class="avatar-description">
+    <!-- PFC_DESCRIPTION -->
+  </div>
+</div>
+
+<h2>Stage &amp; Commitment</h2>
+<div class="stage-badge"><!-- STAGE --></div>
+<div class="commitment">
+  <!-- COMMITMENT -->
+</div>
+
+<div class="footer">
+  Generated by Seyola &middot; Review every 2-4 months
+</div>
+
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Sequence Plan</title>
+<style>
+  :root {
+    --accent: #0a8a6a;
+    --accent-light: #e6f5f0;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --border: #e0e0e0;
+    --card-bg: #f8f8f8;
+    --danger: #c44;
+    --warning: #c90;
+    --success: #2a8a2a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+  h1 { font-family: 'JetBrains Mono', monospace; font-size: 2rem; margin-bottom: 4px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: var(--accent); margin: 32px 0 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+  h3 { font-size: 1rem; margin: 16px 0 8px; }
+
+  .cover { text-align: center; padding: 60px 0 40px; border-bottom: 3px solid var(--accent); margin-bottom: 40px; }
+  .cover .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+  .cover .date { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  .context-card {
+    background: var(--accent);
+    color: white;
+    padding: 24px 32px;
+    border-radius: 8px;
+    margin: 16px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .context-card .ctx-item { font-size: 0.9rem; }
+  .context-card .ctx-label { opacity: 0.7; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.85rem;
+  }
+  .overview-table th {
+    background: var(--accent);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .overview-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .overview-table tr:nth-child(even) { background: var(--card-bg); }
+
+  .email-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .email-card .email-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .email-card .email-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+  }
+  .email-card .email-day {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .email-card .email-subject { font-weight: 600; margin-bottom: 4px; }
+  .email-card .email-purpose { font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+  .email-card .email-structure { font-size: 0.85rem; }
+  .email-card .email-cta {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  .arch-card {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .arch-card .arch-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .arch-card .arch-flow { font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin: 16px 0;
+  }
+  .timeline-day {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 0.7rem;
+  }
+  .timeline-day.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .timeline-day .day-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--accent); text-align: center; color: var(--muted); font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>Email Sequence Plan</h1>
+  <div class="subtitle"><!-- PLACEHOLDER: Client name or brand --></div>
+  <div class="date"><!-- PLACEHOLDER: Date generated --></div>
+</div>
+
+<!-- ============================================ -->
+<h2>Sequence Context</h2>
+
+<div class="context-card">
+  <div class="ctx-item"><div class="ctx-label">Lead Magnet</div><!-- PLACEHOLDER: e.g. 7-Day Mini-Course --></div>
+  <div class="ctx-item"><div class="ctx-label">Paid Offer</div><!-- PLACEHOLDER: e.g. Coaching Program --></div>
+  <div class="ctx-item"><div class="ctx-label">Price Point</div><!-- PLACEHOLDER: e.g. $2,997 --></div>
+  <div class="ctx-item"><div class="ctx-label">Bridge</div><!-- PLACEHOLDER: How free → paid makes sense --></div>
+</div>
+
+<!-- ============================================ -->
+<h2>Sequence Overview</h2>
+
+<table class="overview-table">
+  <thead>
+    <tr>
+      <th>Sequence</th>
+      <th>Purpose</th>
+      <th>Emails</th>
+      <th>Timing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Welcome</td><td>Build trust, deliver value</td><td>7</td><td><!-- PLACEHOLDER: Days 0-12 --></td></tr>
+    <tr><td>Conversion</td><td>Pitch the offer</td><td><!-- PLACEHOLDER: 4-7 --></td><td><!-- PLACEHOLDER --></td></tr>
+    <tr><td>Launch</td><td>Time-bound campaign</td><td><!-- PLACEHOLDER: 6-10 --></td><td><!-- PLACEHOLDER --></td></tr>
+    <tr><td>Nurture</td><td>Ongoing value</td><td><!-- PLACEHOLDER --></td><td><!-- PLACEHOLDER --></td></tr>
+    <tr><td>Re-engagement</td><td>Win back cold subs</td><td>3-4</td><td><!-- PLACEHOLDER --></td></tr>
+    <tr><td>Post-purchase</td><td>Onboard + upsell</td><td>4-6</td><td><!-- PLACEHOLDER --></td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================ -->
+<h2>Welcome Sequence</h2>
+<p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 12px;">DELIVER → CONNECT → VALUE → BRIDGE → PITCH</p>
+
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-num">Email 1 — Deliver</div>
+    <div class="email-day">Day 0</div>
+  </div>
+  <div class="email-subject"><!-- PLACEHOLDER: Subject line --></div>
+  <div class="email-purpose"><!-- PLACEHOLDER: Purpose --></div>
+  <div class="email-structure"><!-- PLACEHOLDER: Structure notes --></div>
+  <div class="email-cta">CTA: <!-- PLACEHOLDER --></div>
+</div>
+
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-num">Email 2 — Connect</div>
+    <div class="email-day">Day 2</div>
+  </div>
+  <div class="email-subject"><!-- PLACEHOLDER: Subject line --></div>
+  <div class="email-purpose"><!-- PLACEHOLDER: Purpose --></div>
+  <div class="email-structure"><!-- PLACEHOLDER: Structure notes --></div>
+  <div class="email-cta">CTA: <!-- PLACEHOLDER --></div>
+</div>
+
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-num">Email 3 — Value</div>
+    <div class="email-day">Day 4</div>
+  </div>
+  <div class="email-subject"><!-- PLACEHOLDER: Subject line --></div>
+  <div class="email-purpose"><!-- PLACEHOLDER: Purpose --></div>
+  <div class="email-structure"><!-- PLACEHOLDER: Structure notes --></div>
+  <div class="email-cta">CTA: <!-- PLACEHOLDER --></div>
+</div>
+
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-num">Email 4 — More Value</div>
+    <div class="email-day">Day 6</div>
+  </div>
+  <div class="email-subject"><!-- PLACEHOLDER: Subject line --></div>
+  <div class="email-purpose"><!-- PLACEHOLDER: Purpose --></div>
+  <div class="email-structure"><!-- PLACEHOLDER: Structure notes --></div>
+  <div class="email-cta">CTA: <!-- PLACEHOLDER --></div>
+</div>
+
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-num">Email 5 — Bridge</div>
+    <div class="email-day">Day 8</div>
+  </div>
+  <div class="email-subject"><!-- PLACEHOLDER: Subject line --></div>
+  <div class="email-purpose"><!-- PLACEHOLDER: Purpose --></div>
+  <div class="email-structure"><!-- PLACEHOLDER: Structure notes --></div>
+  <div class="email-cta">CTA: <!-- PLACEHOLDER --></div>
+</div>
+
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-num">Email 6 — Soft Pitch</div>
+    <div class="email-day">Day 10</div>
+  </div>
+  <div class="email-subject"><!-- PLACEHOLDER: Subject line --></div>
+  <div class="email-purpose"><!-- PLACEHOLDER: Purpose --></div>
+  <div class="email-structure"><!-- PLACEHOLDER: Structure notes --></div>
+  <div class="email-cta">CTA: <!-- PLACEHOLDER --></div>
+</div>
+
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-num">Email 7 — Direct Pitch</div>
+    <div class="email-day">Day 12</div>
+  </div>
+  <div class="email-subject"><!-- PLACEHOLDER: Subject line --></div>
+  <div class="email-purpose"><!-- PLACEHOLDER: Purpose --></div>
+  <div class="email-structure"><!-- PLACEHOLDER: Structure notes --></div>
+  <div class="email-cta">CTA: <!-- PLACEHOLDER --></div>
+</div>
+
+<!-- ============================================ -->
+<h2>Conversion Sequence</h2>
+<p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 12px;">OPEN → DESIRE → PROOF → OBJECTION → CLOSE</p>
+
+<!-- PLACEHOLDER: Repeat email-card pattern for conversion emails -->
+
+<!-- ============================================ -->
+<h2>Launch Sequence</h2>
+<p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 12px;">Day-by-day timeline</p>
+
+<!-- PLACEHOLDER: Repeat email-card pattern for launch emails with day numbers -->
+
+<!-- ============================================ -->
+<h2>Nurture Sequence</h2>
+
+<p style="font-size: 0.9rem; margin-bottom: 8px;"><!-- PLACEHOLDER: Nurture approach, content sources, cadence --></p>
+
+<!-- ============================================ -->
+<h2>Re-engagement Sequence</h2>
+
+<!-- PLACEHOLDER: 3-4 email cards for re-engagement -->
+
+<!-- ============================================ -->
+<h2>Architecture</h2>
+
+<div class="arch-card">
+  <div class="arch-type"><!-- PLACEHOLDER: Straight Line / Branch / Hybrid --></div>
+  <div class="arch-flow"><!-- PLACEHOLDER: Flow diagram text --></div>
+</div>
+
+<!-- ============================================ -->
+<h2>Timing Calendar</h2>
+
+<div class="timeline-grid">
+  <div class="timeline-day"><div class="day-label">D0</div>Deliver</div>
+  <div class="timeline-day"><div class="day-label">D1</div>—</div>
+  <div class="timeline-day active"><div class="day-label">D2</div>Connect</div>
+  <div class="timeline-day"><div class="day-label">D3</div>—</div>
+  <div class="timeline-day active"><div class="day-label">D4</div>Value</div>
+  <div class="timeline-day"><div class="day-label">D5</div>—</div>
+  <div class="timeline-day active"><div class="day-label">D6</div>Value+</div>
+</div>
+
+<div class="timeline-grid">
+  <div class="timeline-day"><div class="day-label">D7</div>—</div>
+  <div class="timeline-day active"><div class="day-label">D8</div>Bridge</div>
+  <div class="timeline-day"><div class="day-label">D9</div>—</div>
+  <div class="timeline-day active"><div class="day-label">D10</div>Soft</div>
+  <div class="timeline-day"><div class="day-label">D11</div>—</div>
+  <div class="timeline-day active"><div class="day-label">D12</div>Pitch</div>
+  <div class="timeline-day"><div class="day-label">D13+</div>Nurture</div>
+</div>
+
+<div class="footer">
+  Generated by Seyola Email Sequences
+</div>
+
+</body>
+</html>

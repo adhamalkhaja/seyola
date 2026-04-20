@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Engine Blueprint</title>
+<style>
+  :root {
+    --accent: #0a8a6a;
+    --accent-light: #e6f5f0;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --border: #e0e0e0;
+    --card-bg: #f8f8f8;
+    --danger: #c44;
+    --success: #2a8a2a;
+    --warning: #b87a00;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+  h1 { font-family: 'JetBrains Mono', monospace; font-size: 2rem; margin-bottom: 4px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: var(--accent); margin: 32px 0 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+  h3 { font-size: 1rem; margin-bottom: 8px; }
+
+  .cover { text-align: center; padding: 60px 0 40px; border-bottom: 3px solid var(--accent); margin-bottom: 40px; }
+  .cover .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+  .cover .date { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  .brand-card {
+    background: var(--accent);
+    color: white;
+    padding: 24px 32px;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+  .brand-card .card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .brand-card .card-detail {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.95;
+    margin-bottom: 6px;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .card h3 { font-size: 0.95rem; margin-bottom: 8px; }
+  .card p { font-size: 0.9rem; color: var(--muted); }
+  .card .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+  .tag-growth { background: #e8f5e9; color: #2e7d32; }
+  .tag-conversion { background: #e3f2fd; color: #1565c0; }
+  .tag-personal { background: #fce4ec; color: #c62828; }
+
+  .flywheel {
+    background: var(--card-bg);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .flywheel .stage {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 4px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .flywheel .arrow { color: var(--accent); font-size: 1.2rem; margin: 0 4px; }
+
+  .checklist { list-style: none; margin: 12px 0; }
+  .checklist li {
+    padding: 8px 0 8px 28px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .checklist li::before {
+    content: '☐';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+  .checklist li.done::before { content: '☑'; color: var(--success); }
+
+  .matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.9rem;
+  }
+  .matrix-table th {
+    background: var(--accent);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .matrix-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .matrix-table tr:nth-child(even) td { background: var(--card-bg); }
+
+  .cult-code {
+    background: #1a1a1a;
+    color: #ffffff;
+    padding: 24px;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+  .cult-code h3 {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .cult-code .belief { margin: 8px 0; padding-left: 16px; border-left: 2px solid var(--accent); font-size: 0.9rem; }
+  .cult-code .reject { margin: 8px 0; padding-left: 16px; border-left: 2px solid var(--danger); font-size: 0.9rem; opacity: 0.8; }
+
+  .rhythm-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .rhythm-week {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .rhythm-week .week-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .rhythm-week .week-action { font-size: 0.85rem; font-weight: 600; }
+
+  .laws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .law-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .law-card .law-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .law-card .law-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+  .law-card .law-status { font-size: 0.85rem; }
+  .status-green { color: var(--success); }
+  .status-yellow { color: var(--warning); }
+  .status-red { color: var(--danger); }
+
+  .next-steps { margin: 16px 0; }
+  .next-steps .step {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .next-steps .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: 700;
+    min-width: 28px;
+  }
+  .next-steps .step-text { font-size: 0.9rem; }
+
+  @media (max-width: 600px) {
+    .grid-2, .laws-grid { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+    .rhythm-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>Content Engine Blueprint</h1>
+  <div class="subtitle"><!-- PLACEHOLDER: Brand name or business name --></div>
+  <div class="date"><!-- PLACEHOLDER: Generated date --></div>
+</div>
+
+<h2>The Monopoly Brand</h2>
+<div class="brand-card">
+  <div class="card-name"><!-- PLACEHOLDER: Big Idea (the movement) --></div>
+  <div class="card-detail"><strong>Charisma:</strong> <!-- PLACEHOLDER: Why people follow you (origin + code) --></div>
+  <div class="card-detail"><strong>New Model:</strong> <!-- PLACEHOLDER: Your unique methodology / named IP --></div>
+</div>
+
+<h2>Market Sophistication Matrix</h2>
+<table class="matrix-table">
+  <tr>
+    <th>Lens</th>
+    <th>Your Audience</th>
+    <th>Content Approach</th>
+  </tr>
+  <tr>
+    <td><strong>Awareness Level</strong></td>
+    <td><!-- PLACEHOLDER: Primary awareness level --></td>
+    <td><!-- PLACEHOLDER: Growth or conversion focus --></td>
+  </tr>
+  <tr>
+    <td><strong>Competence Stage</strong></td>
+    <td><!-- PLACEHOLDER: Where on Dunning-Kruger --></td>
+    <td><!-- PLACEHOLDER: Depth/tone approach --></td>
+  </tr>
+  <tr>
+    <td><strong>Buying Behavior</strong></td>
+    <td><!-- PLACEHOLDER: Plankton / Fish / Hamoor --></td>
+    <td><!-- PLACEHOLDER: Value vs insight approach --></td>
+  </tr>
+</table>
+
+<h2>The Hummer Protocol Flywheel</h2>
+<div class="flywheel">
+  <span class="stage" style="background: #e8f5e9; color: #2e7d32;">Growth Content (50%)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="stage" style="background: #e3f2fd; color: #1565c0;">Conversion Content (50%)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="stage" style="background: #fce4ec; color: #c62828;">Personal Content</span>
+  <span class="arrow">&rarr;</span>
+  <span class="stage" style="background: #fff3e0; color: #e65100;">Lead Magnets</span>
+  <span class="arrow">&rarr;</span>
+  <span class="stage" style="background: var(--accent-light); color: var(--accent);">Offer Rhythm</span>
+</div>
+
+<h2>Content Pillars</h2>
+<div class="grid-2">
+  <div class="card">
+    <h3>Growth Pillars</h3>
+    <p><!-- PLACEHOLDER: 2-3 growth content themes --></p>
+    <span class="tag tag-growth">50% of content</span>
+  </div>
+  <div class="card">
+    <h3>Conversion Pillars</h3>
+    <p><!-- PLACEHOLDER: 2-3 conversion content themes --></p>
+    <span class="tag tag-conversion">50% of content</span>
+  </div>
+</div>
+<div class="card">
+  <h3>Personal Content Blend</h3>
+  <p><!-- PLACEHOLDER: What personal/relatability content looks like for this brand --></p>
+  <span class="tag tag-personal">Woven throughout</span>
+</div>
+
+<h2>Hamoor Protocol Status</h2>
+<ul class="checklist">
+  <li><!-- done or not --> Behavior 1: Offers are exclusive (limited spots/time)</li>
+  <li><!-- done or not --> Behavior 2: Offer rhythm defined (4-week cycle)</li>
+  <li><!-- done or not --> Behavior 3: Visible door closure when offers end</li>
+  <li><!-- done or not --> Behavior 4: Profile signals exclusivity</li>
+  <li><!-- done or not --> Behavior 5: Genuine follow-up, never chase</li>
+  <li><!-- done or not --> Behavior 6: Waitlist is always ready</li>
+  <li><!-- done or not --> Behavior 7: Creating content you genuinely enjoy</li>
+</ul>
+
+<h2>The Cult Code</h2>
+<div class="cult-code">
+  <h3>We Believe</h3>
+  <div class="belief"><!-- PLACEHOLDER: Belief 1 --></div>
+  <div class="belief"><!-- PLACEHOLDER: Belief 2 --></div>
+  <div class="belief"><!-- PLACEHOLDER: Belief 3 --></div>
+  <h3 style="margin-top: 16px;">We Don't</h3>
+  <div class="reject"><!-- PLACEHOLDER: Rejection 1 --></div>
+  <div class="reject"><!-- PLACEHOLDER: Rejection 2 --></div>
+  <div class="reject"><!-- PLACEHOLDER: Rejection 3 --></div>
+</div>
+
+<h2>Offer Rhythm</h2>
+<div class="rhythm-grid">
+  <div class="rhythm-week">
+    <div class="week-label">Week 1</div>
+    <div class="week-action"><!-- PLACEHOLDER: Core Offer Launch --></div>
+  </div>
+  <div class="rhythm-week">
+    <div class="week-label">Week 2</div>
+    <div class="week-action"><!-- PLACEHOLDER: Customer Pre-Launch --></div>
+  </div>
+  <div class="rhythm-week">
+    <div class="week-label">Week 3</div>
+    <div class="week-action"><!-- PLACEHOLDER: Customer Offer Launch --></div>
+  </div>
+  <div class="rhythm-week">
+    <div class="week-label">Week 4</div>
+    <div class="week-action"><!-- PLACEHOLDER: Client Pre-Launch --></div>
+  </div>
+</div>
+
+<h2>5 Content Laws Scorecard</h2>
+<div class="laws-grid">
+  <div class="law-card">
+    <div class="law-number">Law 1</div>
+    <div class="law-name">Meet The Standards</div>
+    <div class="law-status"><!-- PLACEHOLDER: status --></div>
+  </div>
+  <div class="law-card">
+    <div class="law-number">Law 2</div>
+    <div class="law-name">Don't Judge Before 100</div>
+    <div class="law-status"><!-- PLACEHOLDER: status --></div>
+  </div>
+  <div class="law-card">
+    <div class="law-number">Law 3</div>
+    <div class="law-name">$1 Per Follower</div>
+    <div class="law-status"><!-- PLACEHOLDER: status --></div>
+  </div>
+  <div class="law-card">
+    <div class="law-number">Law 4</div>
+    <div class="law-name">7 Hours Bingeable</div>
+    <div class="law-status"><!-- PLACEHOLDER: status --></div>
+  </div>
+  <div class="law-card">
+    <div class="law-number">Law 5</div>
+    <div class="law-name">15% Scale Tax</div>
+    <div class="law-status"><!-- PLACEHOLDER: status --></div>
+  </div>
+</div>
+
+<h2>Next Steps</h2>
+<div class="next-steps">
+  <div class="step"><span class="step-number">01</span><span class="step-text"><!-- PLACEHOLDER: First action --></span></div>
+  <div class="step"><span class="step-number">02</span><span class="step-text"><!-- PLACEHOLDER: Second action --></span></div>
+  <div class="step"><span class="step-number">03</span><span class="step-text"><!-- PLACEHOLDER: Third action --></span></div>
+  <div class="step"><span class="step-number">04</span><span class="step-text"><!-- PLACEHOLDER: Fourth action --></span></div>
+  <div class="step"><span class="step-number">05</span><span class="step-text"><!-- PLACEHOLDER: Fifth action --></span></div>
+</div>
+
+</body>
+</html>

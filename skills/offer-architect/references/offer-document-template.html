@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offer Document</title>
+<style>
+  :root {
+    --accent: #0a8a6a;
+    --accent-light: #e6f5f0;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --border: #e0e0e0;
+    --card-bg: #f8f8f8;
+    --danger: #c44;
+    --success: #2a8a2a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+  h1 { font-family: 'JetBrains Mono', monospace; font-size: 2rem; margin-bottom: 4px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: var(--accent); margin: 32px 0 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+  h3 { font-size: 1rem; margin-bottom: 8px; }
+
+  .cover { text-align: center; padding: 60px 0 40px; border-bottom: 3px solid var(--accent); margin-bottom: 40px; }
+  .cover .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+  .cover .date { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  .offer-card {
+    background: var(--accent);
+    color: white;
+    padding: 24px 32px;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+  .offer-card .card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .offer-card .card-detail {
+    font-size: 0.9rem;
+    margin: 4px 0;
+    opacity: 0.95;
+  }
+  .offer-card .card-badges {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .offer-card .badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .components-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .component-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .component-card .comp-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .component-card .comp-value { font-size: 0.85rem; line-height: 1.4; }
+
+  .roadmap-phase {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .roadmap-phase .phase-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .roadmap-phase .phase-name { font-weight: 600; margin-bottom: 4px; }
+  .roadmap-phase .phase-milestone { font-size: 0.85rem; color: var(--muted); }
+  .roadmap-phase .phase-details { font-size: 0.8rem; margin-top: 8px; }
+
+  .pricing-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .pricing-table th {
+    background: var(--accent);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pricing-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+  .pricing-table tr:nth-child(even) td { background: var(--card-bg); }
+
+  .proof-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .proof-card .proof-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .proof-card .proof-result { font-weight: 600; margin-bottom: 4px; }
+  .proof-card .proof-quote {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--muted);
+    border-left: 3px solid var(--accent);
+    padding-left: 12px;
+    margin-top: 8px;
+  }
+
+  .ip-card {
+    background: var(--accent);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 16px 0;
+  }
+  .ip-card .ip-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+    margin-bottom: 4px;
+  }
+  .ip-card .ip-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .ip-card .ip-shape {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  .offer-doc-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .offer-doc-section .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .offer-doc-section .section-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .offer-doc-section .section-content {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 20px; }
+    .cover { padding: 30px 0 20px; }
+    h2 { break-after: avoid; }
+    .components-grid { break-inside: avoid; }
+    .offer-doc-section { break-inside: avoid; }
+  }
+
+  @media (max-width: 600px) {
+    .components-grid { grid-template-columns: repeat(2, 1fr); }
+    .components-grid .component-card:last-child { grid-column: span 2; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>Offer Document</h1>
+  <div class="subtitle"><!-- OFFER_NAME --></div>
+  <div class="date"><!-- DATE --></div>
+</div>
+
+<h2>Offer Overview</h2>
+<div class="offer-card">
+  <div class="card-name"><!-- OFFER_NAME --></div>
+  <div class="card-detail"><!-- OFFER_PROMISE --></div>
+  <div class="card-detail"><!-- OFFER_WHO --></div>
+  <div class="card-badges">
+    <!-- OFFER_BADGES -->
+  </div>
+</div>
+
+<h2>5 Components</h2>
+<div class="components-grid">
+  <div class="component-card">
+    <div class="comp-label">Product</div>
+    <div class="comp-value"><!-- COMP_PRODUCT --></div>
+  </div>
+  <div class="component-card">
+    <div class="comp-label">Promise</div>
+    <div class="comp-value"><!-- COMP_PROMISE --></div>
+  </div>
+  <div class="component-card">
+    <div class="comp-label">Urgency</div>
+    <div class="comp-value"><!-- COMP_URGENCY --></div>
+  </div>
+  <div class="component-card">
+    <div class="comp-label">Bonuses</div>
+    <div class="comp-value"><!-- COMP_BONUSES --></div>
+  </div>
+  <div class="component-card">
+    <div class="comp-label">Guarantee</div>
+    <div class="comp-value"><!-- COMP_GUARANTEE --></div>
+  </div>
+</div>
+
+<h2>Client Roadmap</h2>
+<!-- ROADMAP_PHASES -->
+
+<h2>Pricing</h2>
+<table class="pricing-table">
+  <thead>
+    <tr><th>Option</th><th>Structure</th><th>Total</th></tr>
+  </thead>
+  <tbody>
+    <!-- PRICING_ROWS -->
+  </tbody>
+</table>
+
+<h2>Proof Wall</h2>
+<!-- PROOF_CARDS -->
+
+<h2>Signature IP</h2>
+<div class="ip-card">
+  <div class="ip-label">Your Signature Framework</div>
+  <div class="ip-name"><!-- IP_NAME --></div>
+  <div class="ip-shape"><!-- IP_SHAPE --></div>
+</div>
+
+<h2>The Offer Document</h2>
+<!-- OFFER_DOC_SECTIONS -->
+
+<div class="footer">
+  Generated by Seyola &middot; Revisit every quarter &middot; Update proof and sharpen language
+</div>
+
+</body>
+</html>

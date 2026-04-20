@@ -94,13 +94,24 @@ fi
 echo ""
 
 # --- Link the seyola root directory ---
+# Skip when INSTALL_DIR is inside SOURCE_DIR (e.g. running --local from repo root)
+# because a self-referential symlink causes "too many levels of symbolic links"
+# on Windows Git Bash and serves no purpose (the repo IS the target).
 
 SEYOLA_LINK="$INSTALL_DIR/seyola"
-if [ -L "$SEYOLA_LINK" ]; then
-  rm "$SEYOLA_LINK"
-fi
-if [ ! -d "$SEYOLA_LINK" ]; then
-  ln -s "$SOURCE_DIR" "$SEYOLA_LINK"
+case "$INSTALL_DIR/" in
+  "$SOURCE_DIR"/*) SKIP_ROOT_LINK=1 ;;
+  *)               SKIP_ROOT_LINK=0 ;;
+esac
+
+if [ "$SKIP_ROOT_LINK" -eq 0 ]; then
+  if [ -L "$SEYOLA_LINK" ]; then
+    rm "$SEYOLA_LINK"
+  fi
+  if [ ! -d "$SEYOLA_LINK" ]; then
+    ln -s "$SOURCE_DIR" "$SEYOLA_LINK" 2>/dev/null || \
+      echo -e "  ${YELLOW}⚠${NC} skipped root symlink (filesystem does not support it)"
+  fi
 fi
 
 # --- Discover and link skills ---

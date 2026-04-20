@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Post Batch</title>
+<style>
+  :root {
+    --accent: #0a8a6a;
+    --accent-light: #e6f5f0;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --border: #e0e0e0;
+    --card-bg: #f8f8f8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-family: 'JetBrains Mono', monospace; font-size: 2rem; margin-bottom: 4px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: var(--accent); margin: 32px 0 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+
+  .cover { text-align: center; padding: 60px 0 40px; border-bottom: 3px solid var(--accent); margin-bottom: 40px; }
+  .cover .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+  .cover .date { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  .calendar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 16px 0; }
+  .cal-day { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; font-size: 0.8rem; }
+  .cal-day .day-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+  .cal-day .day-type { font-weight: 600; font-size: 0.75rem; }
+  .type-growth { color: #2e7d32; }
+  .type-conversion { color: #1565c0; }
+  .type-personal { color: #c62828; }
+
+  .post-block {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .post-number { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent); }
+  .post-type { font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+
+  .post-hook {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: white;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+  }
+  .post-body {
+    font-size: 0.9rem;
+    white-space: pre-line;
+    padding: 12px;
+    background: white;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    line-height: 1.8;
+  }
+  .post-cta {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    padding: 8px 12px;
+    background: var(--accent-light);
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .post-media {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .calendar { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>LinkedIn Post Batch</h1>
+  <div class="subtitle"><!-- PLACEHOLDER: Brand name or topic focus --></div>
+  <div class="date"><!-- PLACEHOLDER: Week of [date] --></div>
+</div>
+
+<h2>Posting Calendar</h2>
+<div class="calendar">
+  <div class="cal-day"><div class="day-label">Mon</div><div class="day-type type-growth"><!-- PLACEHOLDER --></div></div>
+  <div class="cal-day"><div class="day-label">Tue</div><div class="day-type type-conversion"><!-- PLACEHOLDER --></div></div>
+  <div class="cal-day"><div class="day-label">Wed</div><div class="day-type type-personal"><!-- PLACEHOLDER --></div></div>
+  <div class="cal-day"><div class="day-label">Thu</div><div class="day-type type-growth"><!-- PLACEHOLDER --></div></div>
+  <div class="cal-day"><div class="day-label">Fri</div><div class="day-type type-conversion"><!-- PLACEHOLDER --></div></div>
+</div>
+
+<h2>Posts</h2>
+
+<!-- Repeat this block for each post -->
+<div class="post-block">
+  <div class="post-meta">
+    <span class="post-number">Post #1</span>
+    <span class="post-type" style="background: #e8f5e9; color: #2e7d32;"><!-- Growth / Conversion / Personal --></span>
+  </div>
+  <div class="post-hook"><!-- PLACEHOLDER: First line / hook --></div>
+  <div class="post-body"><!-- PLACEHOLDER: Full post body --></div>
+  <div class="post-cta"><!-- PLACEHOLDER: CTA --></div>
+  <div class="post-media">Media: <!-- PLACEHOLDER: none / selfie / carousel / video --></div>
+</div>
+
+<!-- Copy post-block for posts #2 through #5-10 -->
+
+</body>
+</html>

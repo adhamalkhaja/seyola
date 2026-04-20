@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Engine Blueprint</title>
+<style>
+  :root {
+    --accent: #0a8a6a;
+    --accent-light: #e6f5f0;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --border: #e0e0e0;
+    --card-bg: #f8f8f8;
+    --danger: #c44;
+    --success: #2a8a2a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+  h1 { font-family: 'JetBrains Mono', monospace; font-size: 2rem; margin-bottom: 4px; }
+  h2 { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: var(--accent); margin: 32px 0 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+  h3 { font-size: 1rem; margin-bottom: 8px; }
+
+  .cover { text-align: center; padding: 60px 0 40px; border-bottom: 3px solid var(--accent); margin-bottom: 40px; }
+  .cover .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+  .cover .date { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  .esp-card {
+    background: var(--accent);
+    color: white;
+    padding: 24px 32px;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+  .esp-card .card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .esp-card .card-detail {
+    font-size: 0.9rem;
+    margin: 4px 0;
+    opacity: 0.95;
+  }
+
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stack-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .stack-card .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .stack-card .card-title { font-weight: 600; margin-bottom: 4px; }
+  .stack-card .card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+
+  .dns-steps {
+    counter-reset: dns-step;
+    list-style: none;
+  }
+  .dns-steps li {
+    position: relative;
+    padding: 12px 16px 12px 48px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .dns-steps li::before {
+    counter-increment: dns-step;
+    content: counter(dns-step);
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .flow-diagram {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 16px 0;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+  .flow-diagram .flow-step {
+    display: inline-block;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin: 4px;
+  }
+  .flow-diagram .flow-arrow { color: var(--accent); font-weight: 700; margin: 0 4px; }
+
+  .tag-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .tag-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+  }
+  .tag-card .tag-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .tag-card .tag-desc { font-size: 0.85rem; color: var(--muted); }
+
+  .landing-card {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .landing-card .lp-headline { font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; }
+  .landing-card .lp-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 4px; }
+
+  .action-list { margin: 16px 0; }
+  .action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .action-item:last-child { border-bottom: none; }
+  .action-check {
+    width: 20px; height: 20px;
+    border: 2px solid var(--accent);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--accent); text-align: center; color: var(--muted); font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>Email Engine Blueprint</h1>
+  <div class="subtitle"><!-- PLACEHOLDER: Client name or brand --></div>
+  <div class="date"><!-- PLACEHOLDER: Date generated --></div>
+</div>
+
+<!-- ============================================ -->
+<h2>ESP Selection</h2>
+
+<div class="esp-card">
+  <div class="card-name"><!-- PLACEHOLDER: Kit / Beehive --></div>
+  <div class="card-detail"><!-- PLACEHOLDER: Why this ESP was chosen --></div>
+  <div class="card-detail"><!-- PLACEHOLDER: Sending domain --></div>
+</div>
+
+<!-- ============================================ -->
+<h2>DNS & Deliverability Setup</h2>
+
+<ul class="dns-steps">
+  <li><!-- PLACEHOLDER: Buy sending domain --></li>
+  <li><!-- PLACEHOLDER: Set up Google Workspace --></li>
+  <li><!-- PLACEHOLDER: Hire DNS specialist (~$100 Fiverr) --></li>
+  <li><!-- PLACEHOLDER: Configure SPF, DKIM, DMARC --></li>
+  <li><!-- PLACEHOLDER: Test deliverability --></li>
+</ul>
+
+<!-- ============================================ -->
+<h2>Magnet Stack</h2>
+
+<div class="stack-grid">
+  <div class="stack-card">
+    <div class="card-num">Magnet 1 — Foundation</div>
+    <div class="card-title"><!-- PLACEHOLDER: Mini-course name --></div>
+    <div class="card-desc"><!-- PLACEHOLDER: 8-day sequence topic + structure --></div>
+  </div>
+  <div class="stack-card">
+    <div class="card-num">Magnet 2 — Community</div>
+    <div class="card-title"><!-- PLACEHOLDER: Free community/toolkit name --></div>
+    <div class="card-desc"><!-- PLACEHOLDER: What's included --></div>
+  </div>
+  <div class="stack-card">
+    <div class="card-num">Magnet 3 — Quiz</div>
+    <div class="card-title"><!-- PLACEHOLDER: Quiz topic --></div>
+    <div class="card-desc"><!-- PLACEHOLDER: Quiz format and data collected --></div>
+  </div>
+  <div class="stack-card">
+    <div class="card-num">Magnet 4 — LinkedIn</div>
+    <div class="card-title"><!-- PLACEHOLDER: Comment trigger keyword --></div>
+    <div class="card-desc"><!-- PLACEHOLDER: LinkedIn capture flow --></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<h2>Automation Architecture</h2>
+
+<div class="flow-diagram">
+  <span class="flow-step">Trigger</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step">Tag</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step">Sequence</span>
+</div>
+
+<h3>Automation 1: Lead Magnet</h3>
+<p style="font-size: 0.9rem; margin-bottom: 16px;"><!-- PLACEHOLDER: Trigger → Tag → Sequence details --></p>
+
+<h3>Automation 2: High-Intent</h3>
+<p style="font-size: 0.9rem; margin-bottom: 16px;"><!-- PLACEHOLDER: LinkedIn comment → "77" tag → Offer doc sequence --></p>
+
+<!-- ============================================ -->
+<h2>Essential Tags</h2>
+
+<div class="tag-grid">
+  <div class="tag-card">
+    <div class="tag-name">Client</div>
+    <div class="tag-desc"><!-- PLACEHOLDER: When applied, how connected (Zapier), purpose --></div>
+  </div>
+  <div class="tag-card">
+    <div class="tag-name">77 (High-Intent)</div>
+    <div class="tag-desc"><!-- PLACEHOLDER: Sources, purpose, what it triggers --></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<h2>LinkedIn Capture System</h2>
+
+<p style="font-size: 0.9rem; margin-bottom: 12px;"><!-- PLACEHOLDER: Comment-trigger strategy, profile funnel, connection message --></p>
+
+<!-- ============================================ -->
+<h2>Landing Page</h2>
+
+<div class="landing-card">
+  <div class="lp-headline"><!-- PLACEHOLDER: Headline (Outcome + Specificity + Differentiation) --></div>
+  <div class="lp-sub"><!-- PLACEHOLDER: Subheadline --></div>
+  <div class="lp-sub">Template: Kit Cyprus | Form: Email only | CTA: <!-- PLACEHOLDER: Button text --></div>
+</div>
+
+<!-- ============================================ -->
+<h2>Password Reply Hack</h2>
+
+<p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Password word:</strong> <!-- PLACEHOLDER: e.g. MANGO --></p>
+<p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Sequence:</strong> Password email (immediate) → Intro email (1 hour) → Mini-course Day 1 (next morning)</p>
+
+<!-- ============================================ -->
+<h2>Next Steps</h2>
+
+<div class="action-list">
+  <div class="action-item"><div class="action-check"></div><!-- PLACEHOLDER: Step 1 --></div>
+  <div class="action-item"><div class="action-check"></div><!-- PLACEHOLDER: Step 2 --></div>
+  <div class="action-item"><div class="action-check"></div><!-- PLACEHOLDER: Step 3 --></div>
+  <div class="action-item"><div class="action-check"></div><!-- PLACEHOLDER: Step 4 --></div>
+  <div class="action-item"><div class="action-check"></div><!-- PLACEHOLDER: Step 5 --></div>
+</div>
+
+<div class="footer">
+  Generated by Seyola Email Strategist
+</div>
+
+</body>
+</html>
