@@ -585,7 +585,7 @@ After all 7 columns extracted:
 >
 > Does this capture your business accurately? Any adjustments?"
 
-**If Claude Code:** Generate HTML report file with Business Map page
+**If CLI agent with file access:** Generate HTML report file with Business Map page
 
 **If Web/ChatGPT:** Output XML for copy-paste:
 > "Copy this XML and paste it at app.the browser:"
@@ -1024,7 +1024,7 @@ After Lead Generation swimlane is complete and annotated:
 
 ## Cross-Platform Mode
 
-### Claude Code (File Access)
+### CLI agent (file access)
 
 - Generate HTML report files directly
 - Save progress state to file

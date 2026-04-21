@@ -283,7 +283,7 @@ Reference `references/opportunity-categories.md` for detailed options per catego
 
 ## Output: Process Swimlane
 
-### For Claude Code
+### For CLI agents (file access)
 
 Save as new page in existing HTML report file:
 - Add page after Bow-Tie

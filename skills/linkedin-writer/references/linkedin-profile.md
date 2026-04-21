@@ -101,8 +101,8 @@ Your LinkedIn name field is searchable. Optimize it:
 **Format:** `[Your Name] | [Keyword-rich descriptor]`
 
 **Examples:**
-- "Adham Al Khaja | Business Architect for Agency Builders"
-- "Tom Young | #1 Business Coach for Consultants"
+- "Jane Doe | Business Architect for Agency Builders"
+- "John Smith | #1 Business Coach for Consultants"
 
 **Rules:**
 - Include keywords your audience searches for

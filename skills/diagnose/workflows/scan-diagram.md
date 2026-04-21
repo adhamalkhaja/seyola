@@ -186,7 +186,7 @@ Check stroke colors:
 
 ## Cross-Platform Notes
 
-### Claude Code
+### CLI agent (file access)
 - Read file directly with Read tool
 - Parse XML in context
 

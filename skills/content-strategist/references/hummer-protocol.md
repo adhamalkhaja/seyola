@@ -1,5 +1,5 @@
 ---
-description: The One Simple Flywheel — growth/conversion/personal content split, content pillar architecture, Scale20 Standards, offer rhythm cycle.
+description: The One Simple Flywheel — growth/conversion/personal content split, content pillar architecture, content standards, offer rhythm cycle.
 connections:
   - "[[market-sophistication]]"
   - "[[hamoor-protocol]]"
@@ -54,7 +54,7 @@ Out of every 10 pieces of content:
 - Behind-the-scenes of business and life
 - See [[personal-content]] for the full framework
 
-## Scale20 Standards (The Non-Negotiables)
+## Content Standards (The Non-Negotiables)
 
 These are the baseline metrics before optimizing anything:
 

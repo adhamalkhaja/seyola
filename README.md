@@ -3,10 +3,10 @@
 ![version](https://img.shields.io/badge/version-2.0.0-0a1f3d?style=flat-square&labelColor=0a1f3d&color=e8d9a0)
 ![skills](https://img.shields.io/badge/skills-17-0a1f3d?style=flat-square&labelColor=0a1f3d&color=e8d9a0)
 ![departments](https://img.shields.io/badge/departments-5-0a1f3d?style=flat-square&labelColor=0a1f3d&color=e8d9a0)
+![workflows](https://img.shields.io/badge/workflows-15-0a1f3d?style=flat-square&labelColor=0a1f3d&color=e8d9a0)
 ![license](https://img.shields.io/badge/license-MIT-0a1f3d?style=flat-square&labelColor=0a1f3d&color=e8d9a0)
-![claude-code](https://img.shields.io/badge/built%20for-Claude%20Code-0a1f3d?style=flat-square&labelColor=0a1f3d&color=e8d9a0)
 
-AI-powered business infrastructure for consultants and coaches. One Advisor, four Departments, 17 workflows. Built by [Adham Al Khaja](https://seyola.com).
+AI-powered business infrastructure for consultants and coaches. One Advisor, four Departments, 17 workflows. Built by [Adham Alkhaja](https://seyola.com).
 
 ## Install
 
@@ -15,7 +15,7 @@ git clone https://github.com/adhamalkhaja/seyola.git ~/.claude/skills/seyola
 cd ~/.claude/skills/seyola && ./setup
 ```
 
-That's it. Skills are now available in Claude Code.
+That's it. Skills are now installed and discoverable.
 
 ## The Team
 
@@ -69,11 +69,11 @@ Hire an advisor to find what's broken. Deploy four departments to fix it.
 cd ~/.claude/skills/seyola && git pull && ./setup
 ```
 
-Or type `/seyola-upgrade` inside Claude Code.
+Or run `/seyola-upgrade` from an agent session.
 
 ## How It Works
 
-Each skill is a `SKILL.md` file that Claude Code reads as instructions. The `setup` script symlinks them into `~/.claude/skills/` so they're discoverable as slash commands.
+Each skill is a `SKILL.md` file your agent reads as instructions. The `setup` script symlinks them into `~/.claude/skills/` so they're discoverable as slash commands.
 
 ```
 seyola/
@@ -133,6 +133,6 @@ By default, skills use flat names (`/consult`). If you have naming conflicts:
 
 ## Created By
 
-**Adham Al Khaja** — Space engineer turned systems thinker. Building the infrastructure layer for consultants and coaches.
+**Adham Alkhaja** — Space engineer turned systems thinker. Building the infrastructure layer for consultants and coaches.
 
 [seyola.com](https://seyola.com)

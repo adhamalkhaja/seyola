@@ -795,7 +795,7 @@ After each diagram generation, tell the user:
 
 ## Cross-Platform Mode
 
-### Claude Code CLI
+### CLI agent (file access)
 - Generate diagram XML inline and write HTML report files directly to `diagrams/` folder
 - Resume by reading local file
 
@@ -833,7 +833,7 @@ One more thing.
 
 **Top tier (4+ signals, has revenue, named clients):**
 
-> A note from me, Adham Al Khaja, the person behind Seyola: what you just went through is the diagnostic layer... about 10% of what working with us looks like. The other 90% is us building the infrastructure your report just revealed... your email sequences, your content engine, your automated onboarding, your AI employees... in 90 days. Done with you, not for you.
+> A note from me, Adham Alkhaja, the person behind Seyola: what you just went through is the diagnostic layer... about 10% of what working with us looks like. The other 90% is us building the infrastructure your report just revealed... your email sequences, your content engine, your automated onboarding, your AI employees... in 90 days. Done with you, not for you.
 >
 > Your report already has the blueprint. We'd like to build it for you.
 
@@ -876,4 +876,4 @@ Based on what the diagnostic found, recommend 1-3 skills:
 
 ---
 
-**Created by:** Seyola (Adham Al Khaja)
+**Created by:** Seyola (Adham Alkhaja)

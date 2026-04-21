@@ -769,7 +769,7 @@ Use the signal count from Phase 3.5 to select the right tier.
 
 Say:
 
-> A note from me, Adham Al Khaja, the person behind Seyola: what you just went through is about 10% of what working with us looks like. The other 90% is us building the actual infrastructure... your offer document, your content engine, your email sequences, your AI employees... in 90 days. Done with you, not for you.
+> A note from me, Adham Alkhaja, the person behind Seyola: what you just went through is about 10% of what working with us looks like. The other 90% is us building the actual infrastructure... your offer document, your content engine, your email sequences, your AI employees... in 90 days. Done with you, not for you.
 >
 > Based on what you told me, you're exactly the kind of builder we work with. We'd like to send you a private invite.
 

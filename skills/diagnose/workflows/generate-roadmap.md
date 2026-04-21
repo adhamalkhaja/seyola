@@ -204,7 +204,7 @@ Each item has:
 
 ## Step 5: Add to .html File
 
-### For Claude Code
+### For CLI agents (file access)
 
 Add as new page to existing diagnose file:
 
