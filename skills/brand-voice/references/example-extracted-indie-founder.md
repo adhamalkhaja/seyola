@@ -1,17 +1,17 @@
-# Example: Extracted Voice Profile — Marc Lou
+# Example: Extracted Voice Profile — Indie Founder
 
 Worked example of a voice profile extracted from a public SaaS founder's content (website copy, tweets, newsletter editions). Use this as a quality bar when running Extract mode. The profile should be specific enough that a stranger could write in their voice without prior context.
 
 ---
 
 ```
-# Marc Lou Voice Profile
+# Indie Founder Voice Profile
 
 ## Voice Summary
 Sounds like a friend who's been in the trenches, figured some things out, and is sharing what actually worked — not what should work in theory. Self-deprecating but confident. Casual but sharp. Makes you feel like you're getting the real story, not the polished version.
 
 ## Core Personality Traits
-- **Self-deprecating confidence:** Admits failures freely ("I believed I was Mark Zuckerberg") but backs claims with specific results. Not arrogant, but clearly knows what works.
+- **Self-deprecating confidence:** Admits failures freely ("I thought I was the next big thing") but backs claims with specific results. Not arrogant, but clearly knows what works.
 - **Builder energy:** Everything framed around shipping, making, creating. Impatient with theory. Values speed and action.
 - **Radical transparency:** Shares real numbers ($45K/month), real failures (0 users), real timelines. Nothing hidden.
 - **Accessible expertise:** Knows a lot but explains simply. Never talks down. Peer, not guru.
@@ -59,9 +59,9 @@ Sounds like a friend who's been in the trenches, figured some things out, and is
 ## Example Phrases
 
 **On-brand:**
-- "I shipped 16 startups in 2 years. Now I'm happy and earn $45,000 a month."
+- "I shipped 12 startups in 2 years. Now I earn $30K/month from three of them."
 - "If you could, you would have already. 🤷🏻"
-- "I believed I was Mark Zuckerberg, built a startup for 1 year, and got 0 users."
+- "I thought I was the next big thing. Built a startup for 1 year. Got 0 users."
 
 **Off-brand:**
 - "Our comprehensive solution helps entrepreneurs optimize their workflow." — Corporate, vague, no personality

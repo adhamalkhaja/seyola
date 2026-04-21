@@ -30,17 +30,17 @@ Sweet spot: 30–45 characters.
 Key: Social proof (73%) used 1.8× more than urgency (40%).
 
 ## 6 Voice Archetypes
-1. Punk Philosopher (Kemp, Molina, Taki): Short. Contrarian. "$802K Google Doc."
-2. Operator (Fazio): Math-first. "1,200 calls this month."
-3. Lifestyle Aspirational (Pegs, George): Emoji-rich. Stories. Daily.
-4. Spiritual Strategist (Bolton): Energy + business. Long-form.
-5. Apocalyptic Evangelist (Suby): Military metaphors. Pain → Dream → System.
-6. Bro-Marketer Showman (Brown, CrtrLnch): Social proof walls. Urgency.
+1. Punk Philosopher: Short. Contrarian. "$802K Google Doc."
+2. Operator: Math-first. "1,200 calls this month."
+3. Lifestyle Aspirational: Emoji-rich. Stories. Daily.
+4. Spiritual Strategist: Energy + business. Long-form.
+5. Apocalyptic Evangelist: Military metaphors. Pain → Dream → System.
+6. Bro-Marketer Showman: Social proof walls. Urgency.
 
 ## Pricing Intelligence
 - 35/47 creators mention weekly pricing. $250/week is the Schelling point.
 - Pricing ladder: $9-47 micro → $100-199 workshop → $250/wk coaching → $500+/wk premium → $10K+ install
-- Weekly pricing penetration: Claudia 79%, Rashid 51%, Molina 39%
+- Archetypes using weekly pricing: Lifestyle Aspirational 79%, Operator 51%, Punk Philosopher 39%
 
 ## The 3 Things That Decide Everything
 1. DAILY EMAIL — every top earner emails daily or near-daily

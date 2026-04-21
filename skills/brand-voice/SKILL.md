@@ -266,7 +266,7 @@ From the answers, construct the voice profile:
 
 ## Example: extracted voice profile
 
-See `references/example-extracted-marc-lou.md` for a full worked example based on a SaaS founder's public writing. Use it as a quality bar — the profile should be specific enough that a stranger could write in their voice.
+See `references/example-extracted-indie-founder.md` for a full worked example based on an indie founder profile. Use it as a quality bar — the profile should be specific enough that a stranger could write in their voice.
 
 ## Example: built voice profile
 
